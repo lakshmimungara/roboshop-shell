@@ -27,7 +27,7 @@ VALIDATE(){
     fi
 }
 
-yum install maven -y &>>$LOGFILE
+dnf install maven -y &>>$LOGFILE
 
 VALIDATE $? "Installing Maven"
 
@@ -72,7 +72,7 @@ systemctl start shipping &>>$LOGFILE
 VALIDATE $? "Starting shipping"
 
 
-yum install mysql -y  &>>$LOGFILE
+dnf install mysql -y  &>>$LOGFILE
 
 VALIDATE $? "Installing MySQL client"
 

@@ -31,7 +31,7 @@ curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 
 VALIDATE $? "Setting up NPM Source"
 
-yum install nodejs -y &>>$LOGFILE
+dnf install nodejs -y &>>$LOGFILE
 
 VALIDATE $? "Installing NodeJS"
 
@@ -76,11 +76,11 @@ systemctl start catalogue &>>$LOGFILE
 
 VALIDATE $? "Starting Catalogue"
 
-cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
+cp /home/centos/roboshop-shell/mongo.repo /etc/dnf.repos.d/mongo.repo &>>$LOGFILE
 
 VALIDATE $? "Copying mongo repo"
 
-yum install mongodb-org-shell -y &>>$LOGFILE
+dnf install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "Installing mongo client"
 

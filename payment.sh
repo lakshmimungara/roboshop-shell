@@ -27,7 +27,7 @@ VALIDATE(){
     fi
 }
 
-yum install python36 gcc python3-devel -y &>>$LOGFILE
+dnf install python36 gcc python3-devel -y &>>$LOGFILE
 
 VALIDATE $? "Installing python"
 
@@ -94,7 +94,7 @@ VALIDATE(){
     fi
 }
 
-yum install python36 gcc python3-devel -y &>>$LOGFILE
+dnf install python36 gcc python3-devel -y &>>$LOGFILE
 
 VALIDATE $? "Installing python"
 

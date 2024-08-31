@@ -28,11 +28,11 @@ VALIDATE(){
 }
 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
+cp mongo.repo /etc/dnf.repos.d/mongo.repo &>> $LOGFILE
 
-VALIDATE $? "Copied MongoDB repo into yum.repos.d"
+VALIDATE $? "Copied MongoDB repo into dnf.repos.d"
 
-yum install mongodb-org -y &>> $LOGFILE
+dnf install mongodb-org -y &>> $LOGFILE
 
 VALIDATE $? "Installation of MongoDB"
 
