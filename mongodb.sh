@@ -1,10 +1,11 @@
 #!/bin/bash
 
-DATE=$(date +%F)
-LOGSDIR=/tmp
-# /home/centos/shellscript-logs/script-name-date.log
-SCRIPT_NAME=$0
-LOGFILE=$LOGSDIR/$0-$DATE.log
+LOGS_FOLDER="/var/log/roboshop"
+SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
+LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIMESTAMP.log"
+mkdir -p $LOGS_FOLDER
+
 USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
