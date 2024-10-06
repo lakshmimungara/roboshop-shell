@@ -1,52 +1,48 @@
 #!/bin/bash
 
-DATE=$(date +%F)
-LOGSDIR=/tmp
-# /home/centos/shellscript-logs/script-name-date.log
-SCRIPT_NAME=$0
-LOGFILE=$LOGSDIR/$0-$DATE.log
+LOGS_FOLDER="/var/log/expense"
+SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
+LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIMESTAMP.log"
+mkdir -p $LOGS_FOLDER
+
 USERID=$(id -u)
+#echo "user ID is: $USERID"
 R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
 
-if [ $USERID -ne 0 ];
-then
-    echo -e "$R ERROR:: Please run this script with root access $N"
-    exit 1
-fi
-
-VALIDATE(){
-    if [ $1 -ne 0 ];
-    then
-        echo -e "$2 ... $R FAILURE $N"
+CHECK_ROOT(){
+    if [ $USERID -ne 0 ]
+    then    
+        echo -e "$R Please run this script with root privileges $N" | tee -a $LOG_FILE
         exit 1
-    else
-        echo -e "$2 ... $G SUCCESS $N"
+    fi 
+}
+VALIDATE(){
+    if [ $1 -ne 0 ]
+    then 
+        echo -e "$2 is $R failed $N" | tee -a $LOG_FILE
+        exit 1 
+    else 
+        echo -e "$2 is $G success $N" | tee -a $LOG_FILE
     fi
 }
 
-dnf module disable mysql -y &>> $LOGFILE
+echo "script started executing at: $(date)" | tee -a $LOG_FILE
 
-VALIDATE $? "Disabling the default version"
+CHECK_ROOT
 
-cp /home/centos/roboshop-shell/mysql.repo /etc/dnf.repos.d/mysql.repo &>> $LOGFILE
 
-VALIDATE $? "Copying MySQL repo" 
-
-dnf install mysql-community-server -y &>> $LOGFILE
-
+dnf install mysql-server -y &>> $LOGFILE
 VALIDATE $? "Installing MySQL Server"
 
 systemctl enable mysqld &>> $LOGFILE
-
 VALIDATE $? "Enabling MySQL"
 
 systemctl start mysqld &>> $LOGFILE
-
 VALIDATE $? "Staring MySQL"
 
 mysql_secure_installation --set-root-pass RoboShop@1 &>> $LOGFILE
-
 VALIDATE $? "setting up root password"
